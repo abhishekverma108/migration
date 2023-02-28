@@ -1,0 +1,5 @@
+username: "give username  of mysql"
+password: "give password of mysql"
+rdsusername: "give username  of rds"
+rdspassword: "give password of rds"
+rdsdatabase: "aws database name"
