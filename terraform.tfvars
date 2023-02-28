@@ -1,1 +1,1 @@
-password="wprds123"
+password="give your data base password"
