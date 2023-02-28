@@ -63,7 +63,7 @@
                     #region: ap-south-1
                     #filters:
                     #       tag:Name: wp-aws-db
-                    #db_instance_identifier: terraform-20230228080001
+                    #db_instance_identifier: 
                     #register: rds_instance_info
                     #- name: Display RDS instance endpoint address
                     #  debug:
