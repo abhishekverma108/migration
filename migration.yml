@@ -1,0 +1,85 @@
+---
+- hosts: _master
+  become: true
+  vars_files:
+          - database_vars
+  tasks:
+          - name: Install mysql-server
+            package:
+                    name: mysql-server
+                    state: present
+          - name: start mysqld service
+            service:
+                    name: mysqld
+                    state: started
+                    enabled: yes
+          - name: install pip
+            package:
+                    name: python3-pip
+                    state: present          
+          - name: installing PyMySql 
+            pip:
+                    name: pymysql
+                    state: present
+    
+          - name: creating user of mysql
+            community.mysql.mysql_user:
+                    name: "{{ username }}"
+                    password: "{{ password }}"
+                    priv: '*.*:ALL,GRANT'
+                    state: present
+                    login_password: "{{ password }}"
+
+                   
+          - name: create new database with name lwnew
+            community.mysql.mysql_db:
+                    login_host: localhost
+                    login_user: "{{ username }}"
+                    login_password: "{{ password }}"
+                    name:
+                          - lwnew
+                    state: present
+          - name:  dump database file
+            community.mysql.mysql_db:
+                    state: dump
+                    login_password: "{{ password }}"
+                    name:
+                            - lwnew
+                    target: /tmp/dump.sql
+          - name: fetching dump file to local host
+            ansible.builtin.fetch:
+                    src: /tmp/dump.sql
+                    dest: /tmp/dump.sql
+
+- hosts: localhost
+  become: true
+  tasks:
+          - name: install pip
+            package:
+                    name: python3-pip
+                    state: present
+                    #- name: ghg
+                    #community.aws.rds_instance_info:
+                    #region: ap-south-1
+                    #filters:
+                    #       tag:Name: wp-aws-db
+                    #db_instance_identifier: terraform-20230228080001
+                    #register: rds_instance_info
+                    #- name: Display RDS instance endpoint address
+                    #  debug:
+                    #var: rds_instance_info.db_instances[0].endpoint_address
+          - name: installing PyMySql
+            pip:
+                    name: pymysql
+                    state: present
+          
+          - name: dumping
+            community.mysql.mysql_db:
+
+                    login_user: "{{ rdsusername }}"
+                    login_password: "{{ rdspassword }}"
+                    login_host: "give your rds end point"
+                    login_port: 3306
+                    name: awsdb
+                    state: import
+                    target: /dump.sql
