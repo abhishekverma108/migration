@@ -23,7 +23,7 @@ resource "aws_db_instance" "default" {
 
 #Creating Security Group 
 resource "aws_security_group" "access_to_all" {
-  name        = "access_to_localhost"
+  name        = "access_to_all"
   description = "Allow all inbound traffic "
 
   ingress {
