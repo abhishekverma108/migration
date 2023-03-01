@@ -13,7 +13,7 @@ resource "aws_db_instance" "default" {
     #Allowing Public Access
     publicly_accessible = true
     #Attaching VPC Security Group
-    vpc_security_group_ids = [aws_security_group.access_to_localhost.id]
+    vpc_security_group_ids = [aws_security_group.access_to_all.id]
     apply_immediately = true
     tags = {
     Name = "wp-aws-db"
@@ -21,17 +21,17 @@ resource "aws_db_instance" "default" {
 }
 
 
-#Creating Security Group that allow Minikube to connect  RDS
-resource "aws_security_group" "access_to_localhost" {
+#Creating Security Group 
+resource "aws_security_group" "access_to_all" {
   name        = "access_to_localhost"
-  description = "Allow 3306 inbound traffic only for the public ip of the machine running this code"
+  description = "Allow all inbound traffic "
 
   ingress {
-    description = "3306 from Minikube"
+    description = "Allow all inbound traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    #Public ip of localhost is allowed
+    
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -43,7 +43,7 @@ resource "aws_security_group" "access_to_localhost" {
   }
 
   tags = {
-    Name = "access_to_localhost"
+    Name = "access_to_all"
   }
 }
 
