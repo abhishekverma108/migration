@@ -4,8 +4,8 @@ pipeline {
         terraform 'terraform'
     }
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('00fe45-19-4fa-b5e-fc9753abe81')
-        AWS_SECRET_ACCESS_KEY = credentials('115f18-104-4ca-be7-2fae54c27fd')
+        AWS_ACCESS_KEY_ID     = credentials('give you credentials id')
+        AWS_SECRET_ACCESS_KEY = credentials('give you credentials id')
         
     }
     
